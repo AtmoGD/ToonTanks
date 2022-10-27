@@ -28,4 +28,8 @@ public:
 
 private:
 	void Move(float Value);
+
+	void Rotate(float Value);
+
+	void RotateUpDown(float Value);
 };
