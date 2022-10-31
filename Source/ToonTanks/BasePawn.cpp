@@ -61,14 +61,17 @@ void ABasePawn::Fire()
 	FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
 	FRotator Rotation = ProjectileSpawnPoint->GetComponentRotation();
 	AActor *Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, Rotation);
-	Projectile->SetOwner(this);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FireParticle, SpawnLocation, FRotator::ZeroRotator);
 	ActiveCooldown = FireCooldown;
+	UGameplayStatics::PlayWorldCameraShake(GetWorld(), FireShake, GetActorLocation(), 0.f, 2500.f, 1.f, false);
 }
 
 void ABasePawn::TakeDamageAmount(float Damage)
 {
 	CurrentHealth -= Damage;
+	UGameplayStatics::PlayWorldCameraShake(GetWorld(), HitShake, GetActorLocation(), 0.f, 2500.f, 1.f, false);
+	OnTakeDamage();
+
 	if (CurrentHealth <= 0)
 	{
 		Die();

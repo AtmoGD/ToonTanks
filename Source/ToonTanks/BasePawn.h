@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Camera/CameraShakeBase.h"
 #include "ToonTanks/Projectile.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
@@ -58,6 +59,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UParticleSystem *FireParticle;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	TSubclassOf<class UCameraShakeBase> FireShake;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	TSubclassOf<class UCameraShakeBase> HitShake;
+
 public:
 	ABasePawn();
 
@@ -68,6 +75,9 @@ public:
 	void RotateTurretTo(FVector LookAtTarget);
 
 	void TakeDamageAmount(float DamageAmount);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnTakeDamage();
 
 	void Die();
 
