@@ -70,8 +70,3 @@ void ABasePawn::Die()
 {
 	Destroy();
 }
-
-FVector ABasePawn::GetAimDirection()
-{
-	return TurretMesh->GetForwardVector();
-}

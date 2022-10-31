@@ -57,10 +57,9 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent *OverlappedComponent,
 		{
 			Pawn->TakeDamageAmount(Damage);
 		}
-		DestroyProjectile();
-		// UGameplayStatics::ApplyDamage(OtherActor, Damage, GetInstigatorController(), this, nullptr);
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorLocation(), FRotator::ZeroRotator);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator);
 		// UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, GetActorLocation());
+		DestroyProjectile();
 	}
 }
 

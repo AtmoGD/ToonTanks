@@ -77,9 +77,6 @@ public:
 
 	void Fire();
 
-	UFUNCTION(BlueprintPure)
-	FVector GetAimDirection();
-
 protected:
 	virtual void BeginPlay() override;
 };
