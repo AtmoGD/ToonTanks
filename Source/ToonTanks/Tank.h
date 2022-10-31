@@ -22,6 +22,10 @@ private:
 	class UCameraComponent *Camera;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float MoveSpeed = 100.f;
+
+public:
 	ATank();
 
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;

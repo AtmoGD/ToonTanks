@@ -27,9 +27,6 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float MoveSpeed = 100.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float TurretRotateSpeed = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
