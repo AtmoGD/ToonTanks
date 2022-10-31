@@ -25,6 +25,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class USceneComponent *ProjectileSpawnPoint;
 
+	float ActiveCooldown = 0.f;
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float TurretRotateSpeed = 100.f;
@@ -45,10 +47,7 @@ public:
 	float MaxHealth = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	float FireRate = 2.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	float FireRange = 500.0f;
+	float FireCooldown = 2.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass;

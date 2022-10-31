@@ -31,6 +31,11 @@ void ABasePawn::BeginPlay()
 void ABasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (ActiveCooldown > 0.f)
+	{
+		ActiveCooldown -= DeltaTime;
+	}
 }
 
 void ABasePawn::RotateTurret(float Value)
@@ -50,11 +55,15 @@ void ABasePawn::RotateTurretTo(FVector LookAtTarget)
 
 void ABasePawn::Fire()
 {
+	if (ActiveCooldown > 0.f)
+		return;
+
 	FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
 	FRotator Rotation = ProjectileSpawnPoint->GetComponentRotation();
 	AActor *Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, Rotation);
 	Projectile->SetOwner(this);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FireParticle, SpawnLocation, FRotator::ZeroRotator);
+	ActiveCooldown = FireCooldown;
 }
 
 void ABasePawn::TakeDamageAmount(float Damage)
