@@ -49,8 +49,16 @@ ATank *ATower::GetClosestTank()
         float Distance = FVector::Dist(Tank->GetActorLocation(), GetActorLocation());
         if (Distance < ClosestDistance && Distance < MaxDistance)
         {
-            ClosestDistance = Distance;
-            ClosestTank = Tank;
+            FHitResult HitResult;
+            FCollisionQueryParams CollisionQueryParams;
+            CollisionQueryParams.AddIgnoredActor(this);
+            CollisionQueryParams.AddIgnoredActor(Tank);
+            bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), Tank->GetActorLocation(), ECC_Visibility, CollisionQueryParams);
+            if (!bIsHit)
+            {
+                ClosestTank = Tank;
+                ClosestDistance = Distance;
+            }
         }
     }
 
