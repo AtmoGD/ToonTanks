@@ -22,6 +22,11 @@ void ATower::Tick(float DeltaTime)
         {
             RotateTurretTo(ClosestTank->GetActorLocation());
             Fire();
+            IsAiming = true;
+        }
+        else
+        {
+            IsAiming = false;
         }
     }
 }
@@ -45,17 +50,17 @@ ATank *ATower::GetClosestTank()
     ATank *ClosestTank = nullptr;
     float ClosestDistance = MaxDistance;
 
-    CheckForPlayerInRange();
-
-    for (ATank *Tank : TanksInRange)
+    for (ATank *Tank : Tanks)
     {
         float Distance = FVector::Dist(Tank->GetActorLocation(), GetActorLocation());
-
-        if (Distance < ClosestDistance)
+        if (Distance < ClosestDistance && Distance < MaxDistance)
         {
-            bool IsInSight = TankIsInSight(Tank);
-            UE_LOG(LogTemp, Warning, TEXT("IsInSight: %s"), IsInSight ? TEXT("true") : TEXT("false"));
-            if (TankIsInSight(Tank))
+            FHitResult HitResult;
+            FCollisionQueryParams CollisionQueryParams;
+            CollisionQueryParams.AddIgnoredActor(this);
+            CollisionQueryParams.AddIgnoredActor(Tank);
+            bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), Tank->GetActorLocation(), ECC_Visibility, CollisionQueryParams);
+            if (!bIsHit)
             {
                 ClosestTank = Tank;
                 ClosestDistance = Distance;
@@ -66,48 +71,78 @@ ATank *ATower::GetClosestTank()
     return ClosestTank;
 }
 
-void ATower::CheckForPlayerInRange()
-{
-    for (ATank *Tank : Tanks)
-    {
-        float Distance = FVector::Dist(Tank->GetActorLocation(), GetActorLocation());
-        if (Distance < MaxDistance)
-        {
-            if (!TanksInRange.Contains(Tank))
-            {
-                TanksInRange.Add(Tank);
-            }
-        }
-        else
-        {
-            if (TanksInRange.Contains(Tank))
-            {
-                TanksInRange.Remove(Tank);
-            }
-        }
-    }
-}
+// ATank *ATower::GetClosestTank()
+// {
+//     ATank *ClosestTank = nullptr;
+//     float ClosestDistance = MaxDistance;
 
-bool ATower::TankIsInSight(ATank *Tank)
-{
-    FHitResult HitResult;
+//     CheckForPlayerInRange();
 
-    FCollisionQueryParams CollisionQueryParams;
-    CollisionQueryParams.AddIgnoredActor(this);
-    CollisionQueryParams.AddIgnoredActor(Tank);
+//     for (ATank *Tank : TanksInRange)
+//     {
+//         float Distance = FVector::Dist(Tank->GetActorLocation(), GetActorLocation());
 
-    FVector StartLocation = GetActorLocation();
-    FVector EndLocation = Tank->GetActorLocation();
+//         if (Distance < ClosestDistance)
+//         {
+//             FHitResult HitResult;
 
-    bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, CollisionQueryParams);
+//             FCollisionQueryParams CollisionQueryParams;
+//             CollisionQueryParams.AddIgnoredActor(this);
+//             CollisionQueryParams.AddIgnoredActor(Tank);
 
-    // Print the hit result
-    if (bIsHit)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *HitResult.GetActor()->GetName());
-    }
+//             FVector StartLocation = GetActorLocation();
+//             FVector EndLocation = Tank->GetActorLocation();
 
-    DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, -1.f, 0, 1.f);
+//             bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, CollisionQueryParams);
 
-    return bIsHit;
-}
+//             UE_LOG(LogTemp, Warning, TEXT("IsInSight: %s"), bIsHit ? TEXT("true") : TEXT("false"));
+//             if (bIsHit)
+//             {
+//                 ClosestTank = Tank;
+//                 ClosestDistance = Distance;
+//             }
+//         }
+//     }
+
+//     return ClosestTank;
+// }
+
+// void ATower::CheckForPlayerInRange()
+// {
+//     for (ATank *Tank : Tanks)
+//     {
+//         float Distance = FVector::Dist(Tank->GetActorLocation(), GetActorLocation());
+//         if (Distance < MaxDistance)
+//         {
+//             if (!TanksInRange.Contains(Tank))
+//             {
+//                 TanksInRange.Add(Tank);
+//             }
+//         }
+//         else
+//         {
+//             if (TanksInRange.Contains(Tank))
+//             {
+//                 TanksInRange.Remove(Tank);
+//             }
+//         }
+//     }
+// }
+
+// bool ATower::TankIsInSight(ATank *Tank)
+// {
+//     FHitResult HitResult;
+
+//     FCollisionQueryParams CollisionQueryParams;
+//     CollisionQueryParams.AddIgnoredActor(this);
+//     CollisionQueryParams.AddIgnoredActor(Tank);
+
+//     FVector StartLocation = GetActorLocation();
+//     FVector EndLocation = Tank->GetActorLocation();
+
+//     bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, CollisionQueryParams);
+
+//     DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, -1.f, 0, 1.f);
+
+//     return bIsHit;
+// }
