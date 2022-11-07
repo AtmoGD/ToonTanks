@@ -42,6 +42,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void DestroyProjectile();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -55,6 +57,4 @@ protected:
 
 private:
 	void Move();
-
-	void DestroyProjectile();
 };

@@ -19,8 +19,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float MaxDistance = 600.f;
 
-private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "References")
 	TArray<class ATank *> Tanks;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "References")
+	TArray<class ATank *> TanksInRange;
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -30,5 +33,7 @@ protected:
 
 private:
 	void CheckForPlayer();
+	void CheckForPlayerInRange();
+	bool TankIsInSight(ATank *Tank);
 	ATank *GetClosestTank();
 };

@@ -50,6 +50,7 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent *OverlappedComponent,
 								 bool bFromSweep,
 								 const FHitResult &SweepResult)
 {
+
 	if (OtherActor && OtherActor != this)
 	{
 		ABasePawn *Pawn = Cast<ABasePawn>(OtherActor);
@@ -57,13 +58,19 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent *OverlappedComponent,
 		{
 			Pawn->TakeDamageAmount(Damage);
 		}
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, SweepResult.ImpactPoint, FRotator::ZeroRotator);
-		// UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, GetActorLocation());
+
+		AProjectile *Projectile = Cast<AProjectile>(OtherActor);
+		if (Projectile)
+		{
+			Projectile->DestroyProjectile();
+		}
+
 		DestroyProjectile();
 	}
 }
 
 void AProjectile::DestroyProjectile()
 {
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorLocation(), FRotator::ZeroRotator);
 	Destroy();
 }
