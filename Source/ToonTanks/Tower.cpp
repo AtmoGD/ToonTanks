@@ -15,6 +15,9 @@ void ATower::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+    if (!IsAlive)
+        return;
+
     if (Tanks.Num() > 0)
     {
         ATank *ClosestTank = GetClosestTank();
@@ -70,79 +73,3 @@ ATank *ATower::GetClosestTank()
 
     return ClosestTank;
 }
-
-// ATank *ATower::GetClosestTank()
-// {
-//     ATank *ClosestTank = nullptr;
-//     float ClosestDistance = MaxDistance;
-
-//     CheckForPlayerInRange();
-
-//     for (ATank *Tank : TanksInRange)
-//     {
-//         float Distance = FVector::Dist(Tank->GetActorLocation(), GetActorLocation());
-
-//         if (Distance < ClosestDistance)
-//         {
-//             FHitResult HitResult;
-
-//             FCollisionQueryParams CollisionQueryParams;
-//             CollisionQueryParams.AddIgnoredActor(this);
-//             CollisionQueryParams.AddIgnoredActor(Tank);
-
-//             FVector StartLocation = GetActorLocation();
-//             FVector EndLocation = Tank->GetActorLocation();
-
-//             bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, CollisionQueryParams);
-
-//             UE_LOG(LogTemp, Warning, TEXT("IsInSight: %s"), bIsHit ? TEXT("true") : TEXT("false"));
-//             if (bIsHit)
-//             {
-//                 ClosestTank = Tank;
-//                 ClosestDistance = Distance;
-//             }
-//         }
-//     }
-
-//     return ClosestTank;
-// }
-
-// void ATower::CheckForPlayerInRange()
-// {
-//     for (ATank *Tank : Tanks)
-//     {
-//         float Distance = FVector::Dist(Tank->GetActorLocation(), GetActorLocation());
-//         if (Distance < MaxDistance)
-//         {
-//             if (!TanksInRange.Contains(Tank))
-//             {
-//                 TanksInRange.Add(Tank);
-//             }
-//         }
-//         else
-//         {
-//             if (TanksInRange.Contains(Tank))
-//             {
-//                 TanksInRange.Remove(Tank);
-//             }
-//         }
-//     }
-// }
-
-// bool ATower::TankIsInSight(ATank *Tank)
-// {
-//     FHitResult HitResult;
-
-//     FCollisionQueryParams CollisionQueryParams;
-//     CollisionQueryParams.AddIgnoredActor(this);
-//     CollisionQueryParams.AddIgnoredActor(Tank);
-
-//     FVector StartLocation = GetActorLocation();
-//     FVector EndLocation = Tank->GetActorLocation();
-
-//     bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, CollisionQueryParams);
-
-//     DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, -1.f, 0, 1.f);
-
-//     return bIsHit;
-// }

@@ -65,6 +65,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	TSubclassOf<class UCameraShakeBase> HitShake;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	bool IsAlive = true;
+
 public:
 	ABasePawn();
 
@@ -79,6 +82,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnTakeDamage();
 
+	UFUNCTION(BlueprintImplementableEvent)
 	void Die();
 
 	void Fire();

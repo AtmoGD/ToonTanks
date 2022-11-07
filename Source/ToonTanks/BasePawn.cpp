@@ -74,11 +74,7 @@ void ABasePawn::TakeDamageAmount(float Damage)
 
 	if (CurrentHealth <= 0)
 	{
+		IsAlive = false;
 		Die();
 	}
-}
-
-void ABasePawn::Die()
-{
-	Destroy();
 }
