@@ -58,12 +58,18 @@ void ATank::Move(float Value)
 
 void ATank::Rotate(float Value)
 {
+    if (!IsAlive)
+        return;
+
     FRotator DeltaRotation(0.f, Value * RotateSpeed * GetWorld()->DeltaTimeSeconds, 0.f);
     AddActorLocalRotation(DeltaRotation);
 }
 
 void ATank::RotateUpDown(float Value)
 {
+    if (!IsAlive)
+        return;
+
     float DeltaRotation = Value * RotateUpDownSpeed * GetWorld()->DeltaTimeSeconds;
     FRotator Rotation(DeltaRotation, 0.f, 0.f);
     FRotator SpringRotation = SpringArm->GetRelativeRotation();

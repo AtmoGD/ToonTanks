@@ -31,7 +31,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
+	ATank *GetClosestTank();
+
 private:
 	void CheckForPlayer();
-	ATank *GetClosestTank();
 };

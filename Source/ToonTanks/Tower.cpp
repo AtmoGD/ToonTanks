@@ -21,7 +21,7 @@ void ATower::Tick(float DeltaTime)
     if (Tanks.Num() > 0)
     {
         ATank *ClosestTank = GetClosestTank();
-        if (ClosestTank)
+        if (ClosestTank && ClosestTank->IsAlive)
         {
             RotateTurretTo(ClosestTank->GetActorLocation());
             Fire();

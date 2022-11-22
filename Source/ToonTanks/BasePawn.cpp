@@ -26,6 +26,8 @@ ABasePawn::ABasePawn()
 void ABasePawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentHealth = MaxHealth;
 }
 
 void ABasePawn::Tick(float DeltaTime)
@@ -40,6 +42,9 @@ void ABasePawn::Tick(float DeltaTime)
 
 void ABasePawn::RotateTurret(float Value)
 {
+	if (!IsAlive)
+		return;
+
 	float DeltaRotation = Value * TurretRotateSpeed * GetWorld()->DeltaTimeSeconds;
 	FRotator Rotation(0.f, DeltaRotation, 0.f);
 	TurretMesh->AddRelativeRotation(Rotation);
@@ -47,6 +52,8 @@ void ABasePawn::RotateTurret(float Value)
 
 void ABasePawn::RotateTurretTo(FVector LookAtTarget)
 {
+	if (!IsAlive)
+		return;
 	FVector LookAtTargetCleaned = FVector(LookAtTarget.X, LookAtTarget.Y, TurretMesh->GetComponentLocation().Z);
 	FVector StartLocation = TurretMesh->GetComponentLocation();
 	FRotator TurretRotation = FVector(LookAtTargetCleaned - StartLocation).Rotation();
@@ -70,6 +77,9 @@ void ABasePawn::Fire()
 
 void ABasePawn::TakeDamageAmount(float Damage)
 {
+	if (!IsAlive)
+		return;
+
 	CurrentHealth -= Damage;
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), HitShake, GetActorLocation(), 0.f, 2500.f, 1.f, false);
 	OnTakeDamage();

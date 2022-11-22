@@ -60,7 +60,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float CurrentHealth = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
