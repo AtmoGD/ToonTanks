@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
@@ -28,8 +30,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	float Damage = 50.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
-	UParticleSystem *HitParticle;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects")
+	UNiagaraSystem *HitParticles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	USoundBase *HitSound;
@@ -43,6 +45,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void DestroyProjectile();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void HitPlayer(ABasePawn *HitActor, FVector HitPoint, FVector HitNormal);
 
 protected:
 	virtual void BeginPlay() override;

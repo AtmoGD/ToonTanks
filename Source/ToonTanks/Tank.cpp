@@ -4,6 +4,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
+#include "Math/UnrealMathUtility.h"
 
 ATank::ATank()
 {
@@ -12,6 +13,18 @@ ATank::ATank()
 
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     Camera->SetupAttachment(SpringArm);
+}
+
+void ATank::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    if (PushForce != FVector(0.f, 0.f, 0.f))
+    {
+        FVector PushForceToApply = PushForce * DeltaTime;
+        FMath::Abs(PushForce.Length()) > 0.f ? PushForce -= PushForceToApply : PushForce = FVector(0.f, 0.f, 0.f);
+        AddActorLocalOffset(PushForceToApply, true);
+    }
 }
 
 void ATank::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)

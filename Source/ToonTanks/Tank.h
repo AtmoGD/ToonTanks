@@ -25,8 +25,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float MoveSpeed = 100.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	FVector PushForce = FVector(0.f, 0.f, 0.f);
+
 public:
 	ATank();
+
+	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
