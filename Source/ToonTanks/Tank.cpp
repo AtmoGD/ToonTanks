@@ -45,7 +45,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 
 void ATank::Move(float Value)
 {
-    if (PushForce.Length() > PushForceThreshold)
+    if (PushForce.Length() > PushForceThreshold || !IsAlive)
         return;
 
     float Delta = GetWorld()->DeltaTimeSeconds;

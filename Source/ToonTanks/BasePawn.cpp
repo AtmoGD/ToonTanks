@@ -55,7 +55,7 @@ void ABasePawn::RotateTurretTo(FVector LookAtTarget)
 
 void ABasePawn::Fire()
 {
-	if (ActiveCooldown > 0.f)
+	if (ActiveCooldown > 0.f || !IsAlive)
 		return;
 
 	FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();

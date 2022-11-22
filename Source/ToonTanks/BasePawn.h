@@ -89,7 +89,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnTakeDamage();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void Die();
 
 	UFUNCTION(BlueprintImplementableEvent)
