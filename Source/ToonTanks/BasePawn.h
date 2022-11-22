@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Components/SphereComponent.h"
 #include "Camera/CameraShakeBase.h"
 #include "ToonTanks/Projectile.h"
 #include "CoreMinimal.h"
@@ -44,6 +45,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float RotateUpDownSpeed = 100.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float CurrentSpeed = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float Gravity = -9.81f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float MaxHealth = 100.f;
 
@@ -84,6 +91,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Die();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnFire();
 
 	void Fire();
 

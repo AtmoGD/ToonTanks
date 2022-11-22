@@ -61,9 +61,11 @@ void ABasePawn::Fire()
 	FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
 	FRotator Rotation = ProjectileSpawnPoint->GetComponentRotation();
 	AActor *Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, Rotation);
+	Projectile->SetOwner(this);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FireParticle, SpawnLocation, FRotator::ZeroRotator);
 	ActiveCooldown = FireCooldown;
 	UGameplayStatics::PlayWorldCameraShake(GetWorld(), FireShake, GetActorLocation(), 0.f, 2500.f, 1.f, false);
+	OnFire();
 }
 
 void ABasePawn::TakeDamageAmount(float Damage)

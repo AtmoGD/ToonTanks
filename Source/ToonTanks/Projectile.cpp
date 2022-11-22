@@ -56,9 +56,7 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent *OverlappedComponent,
 		ABasePawn *Pawn = Cast<ABasePawn>(OtherActor);
 		if (Pawn)
 		{
-			FVector HitNormal = SweepResult.ImpactNormal;
-			FVector HitPoint = SweepResult.ImpactPoint;
-			HitPlayer(Pawn, HitPoint, HitNormal);
+			HitPlayer(Pawn, GetActorForwardVector());
 			Pawn->TakeDamageAmount(Damage);
 		}
 
@@ -74,6 +72,7 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent *OverlappedComponent,
 
 void AProjectile::DestroyProjectile()
 {
+	Die();
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitParticles, GetActorLocation());
 	Destroy();
 }

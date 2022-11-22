@@ -33,9 +33,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects")
 	UNiagaraSystem *HitParticles;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
-	USoundBase *HitSound;
-
 protected:
 	float LifeTimeCounter = 0.f;
 
@@ -47,7 +44,10 @@ public:
 	void DestroyProjectile();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void HitPlayer(ABasePawn *HitActor, FVector HitPoint, FVector HitNormal);
+	void Die();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void HitPlayer(ABasePawn *HitActor, FVector Direction);
 
 protected:
 	virtual void BeginPlay() override;

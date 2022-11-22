@@ -23,7 +23,7 @@ void ATank::Tick(float DeltaTime)
     {
         FVector PushForceToApply = PushForce * DeltaTime;
         FMath::Abs(PushForce.Length()) > 0.f ? PushForce -= PushForceToApply : PushForce = FVector(0.f, 0.f, 0.f);
-        AddActorLocalOffset(PushForceToApply, true);
+        AddActorWorldOffset(PushForceToApply, true);
     }
 }
 
@@ -43,8 +43,11 @@ void ATank::Move(float Value)
     if (PushForce.Length() > PushForceThreshold)
         return;
 
-    FVector DeltaLocation(Value * MoveSpeed * GetWorld()->DeltaTimeSeconds, 0.f, 0.f);
+    float Delta = GetWorld()->DeltaTimeSeconds;
+
+    FVector DeltaLocation(Value * MoveSpeed * Delta, 0.f, Gravity * Delta);
     AddActorLocalOffset(DeltaLocation);
+    CurrentSpeed = Value;
 }
 
 void ATank::Rotate(float Value)
