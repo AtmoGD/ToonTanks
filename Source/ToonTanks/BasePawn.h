@@ -49,7 +49,7 @@ public:
 	float CurrentSpeed = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float Gravity = -9.81f;
+	float Gravity = -98.1f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float MaxHealth = 100.f;
