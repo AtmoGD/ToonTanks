@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	FVector PushForce = FVector(0.f, 0.f, 0.f);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float PushForceThreshold = 0.1f;
+
 public:
 	ATank();
 

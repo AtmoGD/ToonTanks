@@ -19,7 +19,7 @@ void ATank::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    if (PushForce != FVector(0.f, 0.f, 0.f))
+    if (PushForce.Length() > PushForceThreshold)
     {
         FVector PushForceToApply = PushForce * DeltaTime;
         FMath::Abs(PushForce.Length()) > 0.f ? PushForce -= PushForceToApply : PushForce = FVector(0.f, 0.f, 0.f);
@@ -40,6 +40,9 @@ void ATank::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 
 void ATank::Move(float Value)
 {
+    if (PushForce.Length() > PushForceThreshold)
+        return;
+
     FVector DeltaLocation(Value * MoveSpeed * GetWorld()->DeltaTimeSeconds, 0.f, 0.f);
     AddActorLocalOffset(DeltaLocation);
 }
