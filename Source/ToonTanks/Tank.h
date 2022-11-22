@@ -21,7 +21,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent *Camera;
 
-	bool IsOnGround = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent *GroundCheck;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
@@ -33,6 +34,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float PushForceThreshold = 0.1f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float GroundCheckDistance = 1.f;
+
 public:
 	ATank();
 
@@ -41,21 +45,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
 protected:
-	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent *OverlappedComponent,
-						AActor *OtherActor,
-						UPrimitiveComponent *OtherComp,
-						int32 OtherBodyIndex,
-						bool bFromSweep,
-						const FHitResult &SweepResult);
-
-	UFUNCTION()
-	void OnOverlapEnd(UPrimitiveComponent *OverlappedComponent,
-					  AActor *OtherActor,
-					  UPrimitiveComponent *OtherComp,
-					  int32 OtherBodyIndex);
+	bool IsGrounded();
 
 private:
 	void Move(float Value);

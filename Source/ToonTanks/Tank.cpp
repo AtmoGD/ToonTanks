@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
@@ -14,14 +15,9 @@ ATank::ATank()
 
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     Camera->SetupAttachment(SpringArm);
-}
 
-void ATank::BeginPlay()
-{
-    Super::BeginPlay();
-
-    CapsuleComp->OnComponentBeginOverlap.AddDynamic(this, &ATank::OnOverlapBegin);
-    CapsuleComp->OnComponentEndOverlap.AddDynamic(this, &ATank::OnOverlapEnd);
+    GroundCheck = CreateDefaultSubobject<UBoxComponent>(TEXT("Ground Check"));
+    GroundCheck->SetupAttachment(RootComponent);
 }
 
 void ATank::Tick(float DeltaTime)
@@ -53,7 +49,7 @@ void ATank::Move(float Value)
         return;
 
     float Delta = GetWorld()->DeltaTimeSeconds;
-    float CurrentGravity = IsOnGround ? 0.f : Gravity * Delta;
+    float CurrentGravity = IsGrounded() ? 0.f : Gravity * Delta;
 
     FVector DeltaLocation(Value * MoveSpeed * Delta, 0.f, CurrentGravity);
     AddActorLocalOffset(DeltaLocation);
@@ -76,33 +72,19 @@ void ATank::RotateUpDown(float Value)
     SpringArm->SetRelativeRotation(SpringRotation);
 }
 
-void ATank::OnOverlapBegin(UPrimitiveComponent *OverlappedComponent,
-                           AActor *OtherActor,
-                           UPrimitiveComponent *OtherComp,
-                           int32 OtherBodyIndex,
-                           bool bFromSweep,
-                           const FHitResult &SweepResult)
+bool ATank::IsGrounded()
 {
-    UE_LOG(LogTemp, Warning, TEXT("OnOverlapBegin"));
-    UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s"), *OtherActor->GetName());
-    // Log Tags of Overlapped Actor
-    for (FName Tag : OtherActor->Tags)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Tag: %s"), *Tag.ToString());
-    }
-    if (OtherActor->ActorHasTag("Ground"))
-    {
-        IsOnGround = true;
-    }
-}
+    TArray<UPrimitiveComponent *> OverlappingActors;
+    GroundCheck->GetOverlappingComponents(OverlappingActors);
 
-void ATank::OnOverlapEnd(UPrimitiveComponent *OverlappedComponent,
-                         AActor *OtherActor,
-                         UPrimitiveComponent *OtherComp,
-                         int32 OtherBodyIndex)
-{
-    if (OtherActor->ActorHasTag("Ground"))
+    for (UPrimitiveComponent *OverlappingComponent : OverlappingActors)
     {
-        IsOnGround = false;
+        AActor *OverlappingActor = OverlappingComponent->GetOwner();
+        if (OverlappingActor->ActorHasTag("Ground"))
+        {
+            return true;
+        }
     }
+
+    return false;
 }
